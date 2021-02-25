@@ -1,3 +1,5 @@
+//github is a mess, how am i supposed to know which is your PS, there are 2 PS3 with slightly different names
+
 // Nikkhil Dev Murthy //
 // Data Management in STATA // 
 // Public Affairs and Community Development //
@@ -25,6 +27,11 @@ clear
 use http://www.stata-press.com/data/r8/census.dta 
 
 // I was unable to find 1980 Census data, which is why I am still using the above dataset // 
+//???should have told me earlier, eg see
+//https://www.google.com/search?q=1980+census+data+by+state&rlz=1CAOTWH_enUS865&oq=1980+census+data+by+state&aqs=chrome..69i57j0i22i30.13102j0j7&sourceid=chrome&ie=UTF-8
+
+//no! do not do that! depends on arbitrary sorting! do:
+// replace state = "South Carolina if state=="S. Carolina"
 
 replace state = "South Carolina" in 40
 replace state = "South Dakota" in 41
@@ -39,6 +46,8 @@ clear
 
 insheet using https://raw.githubusercontent.com/nikhildevmurthy/Nikhil/main/carter_v_reagan.csv
 // Source: New York Times/ Politico and https://www.presidency.ucsb.edu/statistics/elections/1980//
+//im lost, if i go to https://www.presidency.ucsb.edu/statistics/elections/1980 its different data, 
+//where did you get it??
 
 rename v1 state
 
@@ -46,6 +55,7 @@ rename v2 winner
 
 // Replace // 
 
+//this doesnt make sense, if anything var name should be reagan_winner, bc dummy 0/1 means true/false
 replace winner= "1" if winner=="Reagan" 
 
 replace winner= "0" if winner=="Carter"
@@ -55,6 +65,7 @@ replace state = strtrim(state)
 
 // First Merge //
 
+//again!!!! drop paths!!!
 merge 1:1 state using /Users/nikhildev/Desktop/Data_Management/test_8.dta
 // "Test_8" is the edited version of the 1980 census data //
 
@@ -73,6 +84,10 @@ merge 1:1 state using /Users/nikhildev/Desktop/Data_Management/test10.dta
 
 /*Test10 is a dataset with a collection of spending by the Department of 
 Education by state. Source: https://www2.ed.gov/about/overview/budget/history/index.html */ 
+//the site gives a ton of data! i have no clue which one you're talking about!
+//and again as always make sure, you have all the code that you have run to clean/fix the data!!!!!!
+
+//since i have no test10.dta, i cannot run the following!
 
 tab _merge 
 
@@ -88,10 +103,14 @@ clear
 
 // Third Merge // 
 
+//what a mess again!
 insheet using https://raw.githubusercontent.com/nikhildevmurthy/Nikhil/main/Book3.csv
-
+//again, need all code! incl code you used to turn the one goog doc into csv, like drop initial rows etc!
 /* Voter turnout data from the University of Florida. Source https://docs.google.com/spreadsheets/d/1or-N33CpOZYQ1UfZo0h8yGPSyz0Db-xjmZOXg3VJi-Q/edit#gid=1670431880
 */  
+//no that wasnt the source! need url for source of data!!!!
+
+//same comments pertain to the following
 
 merge 1:1 state using /Users/nikhildev/Desktop/Data_Management/prob_set_3_1.dta 
 
