@@ -12,8 +12,11 @@ Presidential Election. I aim to find new empirical evidence to explain the
 results of the 1980 election by studying and testing a variety of factor from 
 education spending to immigration against the results (popular vote). */ 
 
+//why 1980?? can get other years as well?
 
 /* So far I have successfully collected and merged data on one factor that experts posit played a key role in the results of the 1980 presidential election: Big Government. I am currently looking at education spending in 1980 and comparing it to 1981 levels to see whether there was a reduction in spending. Education spending is used as a proxy to measure the reach of "Big Government" */ 
+
+//i think can measure big govt better--get more data
 
 ********************************************************************************
 ****************************** References **************************************
@@ -42,6 +45,8 @@ clear
 
 use http://www.stata-press.com/data/r8/census.dta 
 // I was unable to find 1980 Census data, which is why I am still using the above dataset // 
+//here you go:
+//https://www.census.gov/programs-surveys/decennial-census/data/tables.1980.html
 replace state = "South Carolina" if state=="S. Carolina"
 replace state = "South Dakota" if state=="S. Dakota"
 replace state = "West Virginia" if state=="W. Virginia"
@@ -55,6 +60,9 @@ clear
 *** Code for formatting "edu_1980_spend" ***************************************
 import delimited "/Users/nikhildev/Desktop/Data_Management/Education_Spending.csv", encoding(UTF-8) 
 // This dataset can be found in my github as "educ_spending". The reason I use import is because, for some reason, I am unable to merge this dataset with another if i use the insheet command // 
+//no! yeah fine to use import delimited or oher; but must load from online!!; and this worked for me:
+insheet using https://raw.githubusercontent.com/nikhildevmurthy/Nikhil/main/edu_spending.csv                                       
+
 drop in 1
 rename v1 state
 rename v2 education_spending
@@ -63,7 +71,7 @@ clear
 
 
 
-
+//again, why not having that together earlier??
 ****** Formatting for fourth Merge *********************************************
 clear
 use formatted_census_data.dta
@@ -74,6 +82,7 @@ clear
 
 
 ****** Formatting for Fifth Merge **********************************************
+//looks like you have edited the dataset in excel; again pls dont do that!
 insheet state year educ_spending_1981 using https://raw.githubusercontent.com/nikhildevmurthy/Nikhil/main/Book7.csv
 /* education data for 1981 from the Department of Education 
 source: https://www2.ed.gov/about/overview/budget/history/index.html */ //1980 – 1981 dataset // 
@@ -88,6 +97,7 @@ clear
 insheet State Winner using https://raw.githubusercontent.com/nikhildevmurthy/Nikhil/main/carter_v_reagan.csv
 /// Source: New York Times/ Politico and https://www.presidency.ucsb.edu/statistics/elections/1980/////
 /*(I mannually entered most of the data since the data is not comprehensive.) In other words, I looked at the winners of each state and manually entered them */
+//ok thats fine; and great you do describe how the dataset was created
 replace winner= "1" if winner=="Reagan" // I did this because I wanted to convert the winner variable from string to int // 
 replace winner= "0" if winner=="Carter"
 destring winner, generate(winner_n) force //destrings the winner variable// 
@@ -100,11 +110,15 @@ drop in 1 // I did this because the first row had observations "State" and "winn
 ************************** First Merge *****************************************
 ********************************************************************************
 
-merge 1:1 state using formated_census_data 
+merge 1:1 state using formated_census_data //its misspelled!! cant have mistakes like that!
 tab _merge 
 /* One obeservations in the master did not match because using does not have data on "District of Columbia" */
+//very good explanation
 drop if _merge==1
 drop _merge
+
+//not sure what this box is supposed to be?? and why is it commented out like that,
+//normally box comments are used for sth important like section headings; i'd just use regular commenting out
 /////////////////////////////// Analyzing the Data ////////////////////////////
 //drop if region==2|region==3|region==4// //This is the code i used to get the below statistic // 
 // summarize // Reagan won 8 out of the 9 states in the northeast //
@@ -125,6 +139,7 @@ tab _merge
 of Education has data on United States territories and a few options like "others", which
 is absent from the data in the master */ 
 
+//again not sure why code for analysis is commented out
 /////////////// Code for analysis //////////////////////////////////////////////
 /* keep in 1/51
 destring ed, gen(es)ignore(",")
@@ -147,6 +162,9 @@ clear
 ********************************************************************************
 ************************** Third Merge *****************************************
 ********************************************************************************
+
+//one good habit for programming is consistency; i'd do all merges in similar way--this one is different, you insheet first
+//and then merge with already merged previous ones; in general throught, i'd work on flow, consistency, cleanliness
 
 insheet using https://raw.githubusercontent.com/nikhildevmurthy/Nikhil/main/Book3.csv
 /* Voter turnout data from the University of Florida. Source https://docs.google.com/spreadsheets/d/1or-N33CpOZYQ1UfZo0h8yGPSyz0Db-xjmZOXg3VJi-Q/edit#gid=1670431880
